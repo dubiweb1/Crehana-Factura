@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Factura de Productos</title>
+    <script src="js/ManejoDePrecios.js"></script>
+    <script>
+		Articulo = function()
+		{
+			var nombre;
+			var precio;
+			var cantidad;
+      var descuento;
+			var sumaTotal = 0;
+
+			
+			this.agregarFactura = function()
+			{
+			  sumaTotal = sumaTotal + ((precio * cantidad) - descuento);
+			  document.getElementById("totalgeneralfactura").innerHTML = sumaTotal.toLocaleString('en-IN', {style: 'currency',currency: 'USD', minimumFractionDigits: 2});
+        document.getElementById("totaliva").innerHTML = (sumaTotal*0.13).toLocaleString('en-IN', {style: 'currency',currency: 'USD', minimumFractionDigits: 2});
+        document.getElementById("totalgeneralfacturaCobrar").innerHTML = (sumaTotal + (sumaTotal*0.13)).toLocaleString('en-IN', {style: 'currency',currency: 'USD', minimumFractionDigits: 2});
+
+        
+			}
+			
+			this.establecerNombre = function(cadena)
+			{
+			  nombre = cadena;
+			}
+			
+			this.devolverPrecio = function()
+			{
+			  if (nombre == "CamaraMinolta") precio = 350;
+			  else if (nombre == "CamaraCanon") precio = 520;
+			  else if (nombre == "HP550") precio = 730;
+			  else if (nombre == "VAIO510T") precio = 12.40;
+			  else if (nombre == "NokiaN95") precio = 650;
+			  else if (nombre == "SamsungI900") precio = 960;
+			  else precio = 0;
+			  
+			  document.getElementById("Precio").innerHTML = precio;
+			}
+			
+			this.mostrarDatos = function()
+			{
+			  cantidad = document.getElementById("Cantidad").value;
+			  total = precio * cantidad
+			  espacios = "&nbsp;" + "&nbsp;" + "&nbsp;";
+			  salto = "<br>";
+			 			  
+        document.getElementById("nombre").innerHTML += nombre + salto;
+        document.getElementById("precio").innerHTML += precio.toLocaleString('en-IN', {style: 'currency',currency: 'USD', minimumFractionDigits: 2}) + salto;
+        document.getElementById("cantidad").innerHTML += cantidad + salto;
+        document.getElementById("total").innerHTML += total.toLocaleString('en-IN', {style: 'currency',currency: 'USD', minimumFractionDigits: 2}) + salto;
+        
+        if (total >= 1000 && total <=2000){
+          descuento = total * 0.10;
+        }else if (total >= 2000 && total <=4000){
+          descuento = total * 0.20;
+        }else if (total >= 4000 && total <=7000){
+          descuento =total *  0.30;
+        }else{
+          descuento = 0.0;
+        }
+
+        document.getElementById("descuento").innerHTML += descuento.toLocaleString('en-IN', {style: 'currency',currency: 'USD', minimumFractionDigits: 2}) + salto;
+        document.getElementById("totalgeneral").innerHTML += (total - descuento).toLocaleString('en-IN', {style: 'currency',currency: 'USD', minimumFractionDigits: 2}) + salto;
+
+			}
+		}
+		
+		function verPrecio()
+		{
+		  producto.establecerNombre(document.getElementById("idProduct").value);
+		  producto.devolverPrecio();		  
+		}
+		
+		function actualizar()
+		{
+		  producto.mostrarDatos()
+		  producto.agregarFactura();
+		}
+		
+		producto = new Articulo();		  
+	</script>
+
+<style type="text/css">
+    <!--
+    .titulo {
+        text-align: left;
+        font-weight: bold;
+        font-family: Tahoma, Geneva, sans-serif;
+        font-size: 16px;
+        color: #09F;
+    }
+    .centrados {
+        text-align: center;
+    }
+    .titulo2 {
+        font-weight: bold;
+        font-family: Tahoma, Geneva, sans-serif;
+        font-size: 14px;
+        color: #C90;
+    }
+    .controles {
+        font-family: Tahoma, Geneva, sans-serif;
+        font-size: 15px;
+        font-weight: bold;
+    }
+    .titu01 {
+        font-weight: bold;
+    }
+    -->
+    </style>
+
+
+</head>
+<body>
+    <form id="form1" name="form1" method="post" action="">
+  <table width="655" border="0" align="center" cellpadding="2" cellspacing="2">
+    <tr>
+      <td colspan="10" class="centrados"><table width="270" border="0" align="center" cellpadding="0" cellspacing="0">
+        <tr>
+          <td width="48"><img src="img/shoppingcart_full.png" width="48" height="48" alt="Productos" /></td>
+          <td width="222" class="titulo">Facturación de Productos</td>
+        </tr>
+        <tr>
+          <td>&nbsp;</td>
+          <td class="titulo">&nbsp;</td>
+        </tr>
+      </table></td>
+    </tr>
+
+    <tr>
+      <td colspan="4">Nota de Descuentos por Producto: </td>
+      <td colspan="10"></td>      
+    </tr>
+    <tr>      
+      <td colspan="10">Monto Mayor a $1,000.00 y menor de $2,000.00 un descuento del 10%</td>      
+    </tr>
+    <tr>
+      <td colspan="10">Monto Mayor a $2,000.00 y menor de $4,000.00 un descuento del 20%</td>
+    </tr>
+    <tr>
+      <td colspan="10">Monto Mayor a $4,000.00 y menor de $7,000.00 un descuento del 30%</td>
+    </tr>   
+    <tr>
+          <td>&nbsp;</td>
+          <td class="titulo">&nbsp;</td>
+        </tr>
+    <tr>  
+      <td width="38"><img src="img/search_24.png" width="24" height="24" /></td>
+      <td width="134"><span class="titulo2">Producto</span></td>
+      <td width="16">&nbsp;</td>
+      <td width="47" class="titulo2"><img src="img/finance_32.png" width="32" height="32" /></td>
+      <td width="97" class="titulo2">Precio</td>
+      <td width="16">&nbsp;</td>
+      <td width="51" class="titulo2"><img src="img/misc4.png" width="32" height="32" /></td>
+      <td width="105" class="titulo2">Cantidad</td>
+      <td width="28" class="titulo2"><img src="img/Agregar.gif" width="18" height="18" /></td>
+      <td width="123" class="titulo2">Agregar Producto</td>
+    </tr>
+    <tr>
+      <td colspan="2" class="titulo2"><select name="idProduct" class="controles" id="idProduct" onchange="verPrecio()";>
+        <option selected="selected">---</option>
+        <option value="CamaraMinolta">Camara Minolta</option>
+        <option value="CamaraCanon">Canon 500D</option>
+        <option value="HP550">HP 550</option>
+        <option value="NokiaN95">Nokia N95</option>
+        <option value="SamsungI900">Samsung Omnia I900</option>
+        <option value="VAIO510T">VAIO VGN-P510T</option>
+      </select></td>
+      <td>&nbsp;</td>
+      <td colspan="2" id="Precio" class="titulo2">&nbsp;</td>
+      <td>&nbsp;</td>
+      <td colspan="2"><label>
+        <input name="Cantidad" type="text" class="controles" id="Cantidad" />
+      </label></td>
+      <td colspan="2"><label>
+        <input name="Actualizar" type="button" class="controles" id="Actualizar" value="Agregar Producto" onClick="actualizar();" />
+      </label></td>
+    </tr>
+    <tr>
+      <td colspan="2">&nbsp;</td>
+      <td>&nbsp;</td>
+      <td colspan="2">&nbsp;</td>
+      <td>&nbsp;</td>
+      <td colspan="2">&nbsp;</td>
+      <td colspan="2">&nbsp;</td>
+    </tr>
+    <tr>
+      <td colspan="10"><table width="700" border="0" align="center" cellpadding="0" cellspacing="0">
+        <tr>
+          <td colspan="6">
+                    
+          <div id="factura">            
+            <table width="655" border="1" align="center" cellpadding="2" cellspacing="2">
+              <tr>
+                <td>Articulos</td>
+                <td>Precio</td>
+                <td>Cantidad</td>
+                <td>Total Sin Descuento</td>
+                <td>Descuento</td>
+                <td>Total General</td>
+              </tr>                
+              <tr>
+                <td id="nombre"></td>
+                <td id="precio"></td>
+                <td id="cantidad"></td>
+                <td id="total"></td>
+                <td id="descuento"></td>
+                <td id="totalgeneral"></td>
+              </tr>
+              <tr>         
+                <td align="right" colspan="5">Total General</td>                 
+                <td align="right" id="totalgeneralfactura"></td>
+              </tr>
+              <tr>         
+                <td align="right" colspan="5">Total IVA</td>                 
+                <td align="right" id="totaliva"></td>
+              </tr>
+              <tr>         
+                <td align="right" colspan="5">Total a Cobrar</td>                 
+                <td align="right" id="totalgeneralfacturaCobrar"></td>
+              </tr>
+            </table>
+          </div>
+       
+
+
+          <div id="total"></div>	
+    </div>
+          
+          
+          </td>
+        </tr>
+      </table></td>
+    </tr>
+  </table>
+</form>
+</body>
+</html>
